@@ -13,6 +13,7 @@ type Provider interface {
 	// Headers to use when serving chapter images if needed
 	ImageHeaders() map[string]string
 
+	// Either comics or manga
 	ProviderType() ProviderType
 }
 
@@ -43,4 +44,10 @@ type Page struct {
 	Provider   string
 	ImageURL   string
 	PageNumber int
+}
+
+type ProviderParams struct {
+	MangaLibraryPath string
+	ComicLibraryPath string
+	ProviderType     ProviderType
 }
