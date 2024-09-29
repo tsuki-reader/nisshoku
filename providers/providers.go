@@ -17,11 +17,11 @@ type Provider interface {
 	ProviderType() ProviderType
 }
 
-type ProviderType int64
+type ProviderType string
 
 const (
-	Manga ProviderType = iota
-	Comic
+	Manga ProviderType = "MANGA"
+	Comic ProviderType = "COMICS"
 )
 
 type ProviderResult struct {
