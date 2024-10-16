@@ -57,6 +57,7 @@ type LibraryEntry struct {
 	IsDir    bool
 	Fullpath string
 	Library  string
+	Name     string
 }
 
 func (entry *LibraryEntry) Valid() bool {
@@ -86,6 +87,7 @@ func (ctx *ProviderContext) WalkLibrary(libraryPath string) ([]LibraryEntry, err
 			Fullpath: filepath.Join(libraryPath, e.Name()),
 			IsDir:    e.IsDir(),
 			Library:  libraryPath,
+			Name:     e.Name(),
 		}
 
 		results = append(results, entry)
