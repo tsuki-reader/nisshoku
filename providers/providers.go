@@ -1,5 +1,12 @@
 package providers
 
+import (
+	"errors"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
 type Provider interface {
 	// Returns the results from the given query
 	Search(query string) ([]ProviderResult, error)
@@ -46,8 +53,43 @@ type Page struct {
 	PageNumber int
 }
 
-type ProviderParams struct {
+type LibraryEntry struct {
+	IsDir    bool
+	Fullpath string
+	Library  string
+}
+
+func (entry *LibraryEntry) Valid() bool {
+	return strings.HasPrefix(entry.Fullpath, entry.Library)
+}
+
+type ProviderContext struct {
 	MangaLibraryPath string
 	ComicLibraryPath string
 	ProviderType     ProviderType
+}
+
+func (ctx *ProviderContext) WalkLibrary(libraryPath string) ([]LibraryEntry, error) {
+	results := []LibraryEntry{}
+
+	if !strings.HasPrefix(libraryPath, ctx.ComicLibraryPath) || !strings.HasPrefix(libraryPath, ctx.MangaLibraryPath) {
+		return results, errors.New("cannot walk directory")
+	}
+
+	entries, err := os.ReadDir(libraryPath)
+	if err != nil {
+		return []LibraryEntry{}, err
+	}
+
+	for _, e := range entries {
+		entry := LibraryEntry{
+			Fullpath: filepath.Join(libraryPath, e.Name()),
+			IsDir:    e.IsDir(),
+			Library:  libraryPath,
+		}
+
+		results = append(results, entry)
+	}
+
+	return results, nil
 }
