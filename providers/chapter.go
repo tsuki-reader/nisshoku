@@ -1,9 +1,9 @@
 package providers
 
 type Chapter struct {
-	Title          string
-	ID             string
-	Provider       string
-	Chapter        string
-	AbsoluteNumber int
+	Title          string `json:"title"`
+	ID             string `json:"id"`
+	Provider       string `json:"provider"`
+	Chapter        string `json:"chapter"`
+	AbsoluteNumber int    `json:"absoluteNumber"`
 }
